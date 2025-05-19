@@ -4,3 +4,6 @@
 [submodule "3rdparty/miniaudio"]
 	path = 3rdparty/miniaudio
 	url = https://github.com/mackron/miniaudio
+[submodule "3rdparty/simplesquirrel"]
+	path = 3rdparty/simplesquirrel
+	url = https://github.com/SuperTux/simplesquirrel
