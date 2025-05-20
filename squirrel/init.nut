@@ -1,12 +1,18 @@
-const SDL_MESSAGEBOX_ERROR                    = 0x00000010; /**< error dialog */
-const SDL_MESSAGEBOX_WARNING                  = 0x00000020; /**< warning dialog */
-const SDL_MESSAGEBOX_INFORMATION              = 0x00000040; /**< informational dialog */
-const SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT    = 0x00000080; /**< buttons placed left to right */
-const SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT    = 0x00000100;
+setconsttable(getroottable()) // HACK: this gets constants to map to the root table instead of just poofing after going into runtime
+LEGO.IncludeFile("consts/lego")
+LEGO.IncludeFile("consts/sdl")
 
 // ShowMessageBox(SDL_MESSAGEBOX_INFORMATION, "Game paused = " + LEGO1.IsPaused().tostring());
 // ShowMessageBox(SDL_MESSAGEBOX_INFORMATION, "Game paused = " + LEGO1.GetWorldId("ACT1"));
 
 function CALLBACK_ProcessOneEvent(event) {
-    print(event.GetKey());
+    if (LEGO.IsPaused()) {
+        return;
+    }
+
+    if (event.GetNotification() == NotificationId.c_notificationKeyPress) {
+        if (event.GetKey() == SDLK_0) {
+            print("0 pressed")
+        }
+    }
 }
