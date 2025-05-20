@@ -665,6 +665,36 @@ void LegoOmni::SetupSquirrelVMCurrentClass() {
 
 	LegoGameState::expose(m_ssqVM);
 	LegoEventNotificationParam::expose(m_ssqVM);
+
+	m_ssqVM.set("g_copterScript",   g_copterScript);
+	m_ssqVM.set("g_dunecarScript",  g_dunecarScript);
+	m_ssqVM.set("g_jetskiScript",   g_jetskiScript);
+	m_ssqVM.set("g_racecarScript",  g_racecarScript);
+	m_ssqVM.set("g_carraceScript",  g_carraceScript);
+	m_ssqVM.set("g_carracerScript", g_carracerScript);
+	m_ssqVM.set("g_jetraceScript",  g_jetraceScript);
+	m_ssqVM.set("g_jetracerScript", g_jetracerScript);
+	m_ssqVM.set("g_isleScript",     g_isleScript);
+	m_ssqVM.set("g_elevbottScript", g_elevbottScript);
+	m_ssqVM.set("g_infodoorScript", g_infodoorScript);
+	m_ssqVM.set("g_infomainScript", g_infomainScript);
+	m_ssqVM.set("g_infoscorScript", g_infoscorScript);
+	m_ssqVM.set("g_regbookScript",  g_regbookScript);
+	m_ssqVM.set("g_histbookScript", g_histbookScript);
+	m_ssqVM.set("g_hospitalScript", g_hospitalScript);
+	m_ssqVM.set("g_policeScript",   g_policeScript);
+	m_ssqVM.set("g_garageScript",   g_garageScript);
+	m_ssqVM.set("g_act2mainScript", g_act2mainScript);
+	m_ssqVM.set("g_act3Script",     g_act3Script);
+	m_ssqVM.set("g_jukeboxScript",  g_jukeboxScript);
+	m_ssqVM.set("g_pz5Script",      g_pz5Script);
+	m_ssqVM.set("g_introScript",    g_introScript);
+	m_ssqVM.set("g_testScript",     g_testScript);
+	m_ssqVM.set("g_jukeboxwScript", g_jukeboxwScript);
+	m_ssqVM.set("g_sndAnimScript",  g_sndAnimScript);
+	m_ssqVM.set("g_creditsScript",  g_creditsScript);
+	m_ssqVM.set("g_nocdSourceName", g_nocdSourceName);
+
 	m_ssqVM.set("LEGO", this);
 }
 
