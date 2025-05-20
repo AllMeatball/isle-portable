@@ -21,6 +21,8 @@
 
 #include <SDL3/SDL_filesystem.h>
 #include <SDL3/SDL_log.h>
+#include <simplesquirrel/exceptions.hpp>
+#include <sqstdio.h>
 
 // GLOBAL: LEGO1 0x101015b8
 MxString g_hdPath = "";
@@ -444,18 +446,36 @@ void MxOmni::SetupSquirrelVMCurrentClass()
 {
 }
 
+MxString MxOmni::GetScriptPath(const char *p_path)
+{
+	MxString script_path(g_hdPath.GetData());
+	script_path += "\\squirrel\\";
+	script_path += p_path;
+	script_path += ".nut";
+	script_path.MapPathToFilesystem();
+
+	return script_path;
+}
+
 void MxOmni::ExecScriptFile(const char *p_path)
 {
-	MxString real_path(g_hdPath.GetData());
-	real_path += "\\squirrel\\";
-	real_path += p_path;
-	real_path.MapPathToFilesystem();
+	MxString real_path = GetScriptPath(p_path);
 
 	const char *script_path = real_path.GetData();
 	SDL_Log("Executing script '%s'", script_path);
 
-	ssq::Script script = m_ssqVM.compileFile(script_path);
-	m_ssqVM.run(script);
+	try {
+		ssq::Script script = m_ssqVM.compileFile(script_path);
+		m_ssqVM.run(script);
+	} catch (ssq::CompileException& e) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to run file: %s", e.what());
+	} catch (ssq::TypeException& e) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Something went wrong passing objects: %s", e.what());
+	} catch (ssq::RuntimeException& e) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Something went wrong during execution: %s", e.what());
+	} catch (ssq::NotFoundException& e) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s", e.what());
+	}
 }
 
 vector<MxString> MxOmni::GlobIsleFiles(const MxString& p_path)

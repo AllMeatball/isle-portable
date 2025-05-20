@@ -625,9 +625,15 @@ void LegoOmni::Resume()
 	SetAppCursor(e_cursorArrow);
 }
 
+void LegoOmni::IncludeFile(std::string p_path)
+{
+	ExecScriptFile(p_path.c_str());
+}
+
 void LegoOmni::expose(ssq::VM& vm)
 {
 	ssq::Class cls = vm.addClass(LegoOmni::ClassName(), ssq::Class::Ctor<LegoOmni()>());
+	cls.addFunc("IncludeFile", &LegoOmni::IncludeFile);
 
 	cls.addFunc("Pause", &LegoOmni::Pause);
 	cls.addFunc("Resume", &LegoOmni::Resume);

@@ -111,6 +111,7 @@ public:
 	void SetupSquirrelVM();
 	virtual void SetupSquirrelVMCurrentClass();
 
+	MxString GetScriptPath(const char *p_path);
 	void ExecScriptFile(const char *p_path);
 
 protected:

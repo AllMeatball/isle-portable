@@ -207,6 +207,7 @@ public:
 
 	void SQCallback_ProcessOneEvent(LegoEventNotificationParam& p_param);
 	void SetupSquirrelVMCurrentClass() override;
+	void IncludeFile(std::string p_path);
 	void expose(ssq::VM& vm) override;
 private:
 	WorldContainer* m_worlds;                    // 0x68
