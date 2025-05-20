@@ -634,6 +634,7 @@ void LegoOmni::expose(ssq::VM& vm)
 	ssq::Class cls = vm.addClass(LegoOmni::ClassName(), ssq::Class::Ctor<LegoOmni()>());
 	cls.addFunc("IncludeFile", &LegoOmni::IncludeFile);
 
+	cls.addFunc("GetGameState", &LegoOmni::GetGameState);
 	cls.addFunc("Pause", &LegoOmni::Pause);
 	cls.addFunc("Resume", &LegoOmni::Resume);
 	cls.addFunc("IsPaused", &LegoOmni::IsPaused);
@@ -660,6 +661,7 @@ void LegoOmni::expose(ssq::VM& vm)
 
 void LegoOmni::SetupSquirrelVMCurrentClass() {
 	LegoOmni::expose(m_ssqVM);
+	LegoGameState::expose(m_ssqVM);
 	LegoEventNotificationParam::expose(m_ssqVM);
 	m_ssqVM.set("LEGO", this);
 }

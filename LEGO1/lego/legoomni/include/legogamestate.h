@@ -6,6 +6,9 @@
 #include "lego1_export.h"
 #include "mxtypes.h"
 #include "mxvariable.h"
+#include "simplesquirrel/exposable_class.hpp"
+
+#include <simplesquirrel/simplesquirrel.hpp>
 
 #include <string.h>
 
@@ -53,7 +56,7 @@ public:
 };
 
 // SIZE 0x430
-class LegoGameState {
+class LegoGameState : public ssq::ExposableClass {
 public:
 	enum Act {
 		e_actNotFound = -1,
@@ -174,7 +177,7 @@ public:
 	};
 
 	LEGO1_EXPORT LegoGameState();
-	~LegoGameState();
+	~LegoGameState() override;
 
 	void SetActor(MxU8 p_actorId);
 	void RemoveActor();
@@ -223,6 +226,21 @@ public:
 	void SetCurrentAct(Act p_currentAct);
 	void FindLoadedAct();
 	void RegisterState(LegoState* p_state);
+
+#ifdef LEGO1_DLL
+	void SQWrap_SwitchArea(MxS32 p_area) {
+		SwitchArea((Area)p_area);
+	};
+
+	static void expose(ssq::VM& vm) {
+		ssq::Class cls = vm.addClass("LegoGameState", ssq::Class::Ctor<LegoGameState()>());
+
+		cls.addFunc("SwitchArea", &LegoGameState::SQWrap_SwitchArea);
+	};
+#else
+	void SQWrap_SwitchArea(Area p_area);
+	void expose(ssq::VM& vm);
+#endif
 
 private:
 	MxResult WriteVariable(LegoStorage* p_storage, MxVariableTable* p_from, const char* p_variableName);
