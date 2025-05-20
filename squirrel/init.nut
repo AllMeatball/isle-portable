@@ -4,4 +4,5 @@ const SDL_MESSAGEBOX_INFORMATION              = 0x00000040; /**< informational d
 const SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT    = 0x00000080; /**< buttons placed left to right */
 const SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT    = 0x00000100;
 
-ShowMessageBox(SDL_MESSAGEBOX_INFORMATION, "popup test");
+ShowMessageBox(SDL_MESSAGEBOX_INFORMATION, "Game paused = " + LEGO1.IsPaused().tostring());
+
