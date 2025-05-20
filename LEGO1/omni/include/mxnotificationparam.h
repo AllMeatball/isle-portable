@@ -50,13 +50,13 @@ public:
 	virtual MxNotificationParam* Clone() const { return new MxNotificationParam(m_type, m_sender); } // vtable+0x04
 
 	// FUNCTION: BETA10 0x100135c0
-	NotificationId GetNotification() const { return m_type; }
+	MxS32 GetNotification() const { return m_type; }
 
 	// FUNCTION: BETA10 0x1003c960
 	MxCore* GetSender() const { return m_sender; }
 
 	// FUNCTION: BETA10 0x1007d5c0
-	void SetNotification(NotificationId p_type) { m_type = p_type; }
+	void SetNotification(MxS32 p_type) { m_type = (NotificationId)p_type; }
 
 	// FUNCTION: BETA10 0x1007d5f0
 	void SetSender(MxCore* p_sender) { m_sender = p_sender; }

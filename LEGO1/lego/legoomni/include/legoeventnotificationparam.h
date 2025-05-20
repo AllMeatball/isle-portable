@@ -78,6 +78,7 @@ public:
 			SDL_Keycode p_key
 		)>());
 
+		cls.addFunc("SetNotification", &LegoEventNotificationParam::SetNotification);
 		cls.addFunc("SetKey", &LegoEventNotificationParam::SetKey);
 		cls.addFunc("SetX", &LegoEventNotificationParam::SetX);
 		cls.addFunc("SetY", &LegoEventNotificationParam::SetY);
