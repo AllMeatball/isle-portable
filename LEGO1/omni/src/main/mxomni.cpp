@@ -457,8 +457,14 @@ MxString MxOmni::GetScriptPath(const char *p_path)
 	return script_path;
 }
 
-void MxOmni::ExecScriptFile(const char *p_path)
+#include <squirrel.h>
+
+std::string MxOmni::ExecScriptFile(const char *p_path)
 {
+	if (m_ssqVM.isNull()) {
+		return "m_ssqVM is not ready";
+	}
+
 	MxString real_path = GetScriptPath(p_path);
 
 	const char *script_path = real_path.GetData();
@@ -469,13 +475,19 @@ void MxOmni::ExecScriptFile(const char *p_path)
 		m_ssqVM.run(script);
 	} catch (ssq::CompileException& e) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to run file: %s", e.what());
+		return std::string(e.what());
 	} catch (ssq::TypeException& e) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Something went wrong passing objects: %s", e.what());
+		return std::string(e.what());
 	} catch (ssq::RuntimeException& e) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Something went wrong during execution: %s", e.what());
+		return std::string(e.what());
 	} catch (ssq::NotFoundException& e) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s", e.what());
+		return std::string(e.what());
 	}
+
+	return std::string();
 }
 
 vector<MxString> MxOmni::GlobIsleFiles(const MxString& p_path)

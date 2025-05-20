@@ -112,7 +112,7 @@ public:
 	virtual void SetupSquirrelVMCurrentClass();
 
 	MxString GetScriptPath(const char *p_path);
-	void ExecScriptFile(const char *p_path);
+	std::string ExecScriptFile(const char *p_path);
 
 protected:
 	static MxOmni* g_instance;

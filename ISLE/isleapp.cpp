@@ -202,6 +202,12 @@ MxS32 IsleApp::SetupLegoOmni()
 		VariableTable()->SetVariable("ACTOR_01", "");
 		TickleManager()->SetClientTickleInterval(VideoManager(), 10);
 		result = TRUE;
+
+		std::string script_err = LegoOmni::GetInstance()->ExecScriptFile("init");
+		if (!script_err.empty()) {
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Falied to load init script: %s", script_err.c_str());
+			result = FALSE;
+		}
 	}
 
 	return result;
@@ -752,9 +758,6 @@ inline bool IsleApp::Tick()
 
 	LegoOmni::GetInstance()->CreateBackgroundAudio();
 	BackgroundAudioManager()->Enable(m_useMusic);
-
-
-	LegoOmni::GetInstance()->ExecScriptFile("init");
 
 	MxStreamController* stream = Streamer()->Open("\\lego\\scripts\\isle\\isle", MxStreamer::e_diskStream);
 	MxDSAction ds;
