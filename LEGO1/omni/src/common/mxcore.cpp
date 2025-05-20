@@ -16,9 +16,9 @@ MxCore::MxCore()
 
 // FUNCTION: LEGO1 0x100ae1e0
 // FUNCTION: BETA10 0x1012c077
-MxCore::~MxCore()
-{
-}
+// MxCore::~MxCore()
+// {
+// }
 
 // FUNCTION: LEGO1 0x100ae1f0
 // FUNCTION: BETA10 0x1012c096

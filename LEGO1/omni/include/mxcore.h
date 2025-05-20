@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "mxtypes.h"
 
+#include <simplesquirrel/simplesquirrel.hpp>
 #include <string.h>
 
 class MxParam;
@@ -11,10 +12,10 @@ class MxParam;
 // VTABLE: LEGO1 0x100dc0f8
 // VTABLE: BETA10 0x101c1bc8
 // SIZE 0x08
-class MxCore {
+class MxCore : public ssq::ExposableClass {
 public:
 	MxCore();
-	virtual ~MxCore();                       // vtable+00
+	// ~xCore() override;                       // vtable+00
 	virtual MxLong Notify(MxParam& p_param); // vtable+04
 
 	// FUNCTION: LEGO1 0x10001f70
