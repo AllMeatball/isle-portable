@@ -17,6 +17,8 @@
 #include "mxvariabletable.h"
 #include "mxvideomanager.h"
 
+#include <SDL3/SDL.h>
+
 #include <SDL3/SDL_filesystem.h>
 #include <SDL3/SDL_log.h>
 
@@ -424,6 +426,17 @@ void MxOmni::Resume()
 		m_soundManager->Resume();
 		m_paused = FALSE;
 	}
+}
+
+void SQWrap_ShowMessageBox(unsigned int flags, std::string message)
+{
+	SDL_ShowSimpleMessageBox(flags, "LEGO® Island", message.c_str(), NULL);
+}
+
+void MxOmni::SetupSquirrelVM()
+{
+	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
+    m_ssqVM.addFunc("ShowMessageBox", SQWrap_ShowMessageBox);
 }
 
 void MxOmni::ExecScriptFile(const char *p_path)
