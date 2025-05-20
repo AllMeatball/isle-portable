@@ -65,7 +65,7 @@ public:
 	virtual void Resume();                                                                    // vtable+0x3c
 
 	// FUNCTION: LEGO1 0x10058a90
-	virtual MxBool IsPaused() { return m_paused; } // vtable+0x40
+	virtual bool IsPaused() { return m_paused; } // vtable+0x40
 
 	static void SetInstance(MxOmni* p_instance);
 	static MxBool ActionSourceEquals(MxDSAction* p_action, const char* p_name);
@@ -131,7 +131,7 @@ protected:
 	MxStreamer* m_streamer;                       // 0x40
 	MxAtomSet* m_atomSet;                         // 0x44
 	MxCriticalSection m_criticalSection;          // 0x48
-	MxBool m_paused;                              // 0x64
+	bool m_paused;                                // 0x64
 };
 
 #endif // MXOMNI_H
