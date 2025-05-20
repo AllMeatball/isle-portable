@@ -47,10 +47,5 @@ add_library(libsmacker STATIC
     ${libsmacker_SOURCE_DIR}/smacker.c
 )
 
-set(temp_CMAKE_POLICY_VERSION_MINIMUM "${CMAKE_POLICY_VERSION_MINIMUM}")
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-add_subdirectory("simplesquirrel")
-set(CMAKE_POLICY_VERSION_MINIMUM "${temp_CMAKE_POLICY_VERSION_MINIMUM}")
-
 set_property(TARGET libsmacker PROPERTY ARCHIVE_OUTPUT_NAME "libsmacker$<$<CONFIG:Debug>:d>")
 target_include_directories(libsmacker PUBLIC ${libsmacker_SOURCE_DIR})

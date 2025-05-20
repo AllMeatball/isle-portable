@@ -455,7 +455,10 @@ target_sources(lego1 PRIVATE
   LEGO1/lego/legoomni/src/worlds/score.cpp
   LEGO1/modeldb/modeldb.cpp
 )
-target_link_libraries(lego1 PRIVATE Vec::Vec)
+
+target_link_libraries(lego1 PRIVATE Vec::Vec simplesquirrel)
+target_include_directories(lego1 PRIVATE "${CMAKE_SOURCE_DIR}/3rdparty/simplesquirrel/include")
+
 if (NOT ISLE_MINIWIN)
   target_link_libraries(lego1 PRIVATE d3drm dxguid)
   target_compile_definitions(lego1 PRIVATE DIRECTINPUT_VERSION=0x0500)
