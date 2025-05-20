@@ -28,6 +28,7 @@
 #include "mxstreamer.h"
 #include "mxticklemanager.h"
 #include "mxtransitionmanager.h"
+#include "mxtypes.h"
 #include "mxvariabletable.h"
 #include "scripts.h"
 #include "viewmanager/viewmanager.h"
@@ -629,12 +630,28 @@ void LegoOmni::IncludeFile(std::string p_path)
 	ExecScriptFile(p_path.c_str());
 }
 
+void LegoOmni::SQWrap_InvokeActionWithSender(MxS32 p_actionId, const MxAtomId& p_pAtom, MxS32 p_streamId, LegoEntity* p_sender)
+{
+	InvokeAction((Extra::ActionType)p_actionId, p_pAtom, p_streamId, p_sender);
+}
+
+void LegoOmni::SQWrap_InvokeAction(MxS32 p_actionId, const MxAtomId& p_pAtom, MxS32 p_streamId)
+{
+	SQWrap_InvokeActionWithSender((Extra::ActionType)p_actionId, p_pAtom, p_streamId, nullptr);
+}
+
+
 void LegoOmni::expose(ssq::VM& vm)
 {
 	ssq::Class cls = vm.addClass(LegoOmni::ClassName(), ssq::Class::Ctor<LegoOmni()>());
 	cls.addFunc("IncludeFile", &LegoOmni::IncludeFile);
 
 	cls.addFunc("GetGameState", &LegoOmni::GetGameState);
+
+	// cls.addFunc("Notify", LegoOmni::SQWrap_Notify);
+	cls.addFunc("InvokeAction", &LegoOmni::SQWrap_InvokeAction);
+	cls.addFunc("InvokeActionWithSender", &LegoOmni::SQWrap_InvokeActionWithSender);
+
 	cls.addFunc("Pause", &LegoOmni::Pause);
 	cls.addFunc("Resume", &LegoOmni::Resume);
 	cls.addFunc("IsPaused", &LegoOmni::IsPaused);

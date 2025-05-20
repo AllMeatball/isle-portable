@@ -205,11 +205,23 @@ public:
 	// SYNTHETIC: LEGO1 0x10058b30
 	// LegoOmni::`scalar deleting destructor'
 
+// #ifdef LEGO1_DLL
+// 	LegoGameState SQWrap_GetGameState() {
+// 		return *m_gameState;
+// 	}
+// #else
+// 	LegoGameState SQWrap_GetGameState();
+// #endif
+
 	void SQCallback_ProcessOneEvent(LegoEventNotificationParam& p_param);
 	void SetupSquirrelVMCurrentClass() override;
 	void IncludeFile(std::string p_path);
+
 	void expose(ssq::VM& vm) override;
 private:
+	void SQWrap_InvokeActionWithSender(MxS32 p_actionId, const MxAtomId& p_pAtom, MxS32 p_streamId, LegoEntity* p_sender);
+	void SQWrap_InvokeAction(MxS32 p_actionId, const MxAtomId& p_pAtom, MxS32 p_streamId);
+
 	WorldContainer* m_worlds;                    // 0x68
 	ViewLODListManager* m_viewLODListManager;    // 0x6c
 	LegoInputManager* m_inputManager;            // 0x70
