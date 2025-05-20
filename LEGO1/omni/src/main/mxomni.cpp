@@ -161,7 +161,8 @@ MxResult MxOmni::Create(MxOmniCreateParam& p_param)
 			}
 		}
 	}
-	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
+
+	SetupSquirrelVM();
 
 	result = SUCCESS;
 

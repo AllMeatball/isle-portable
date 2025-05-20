@@ -283,8 +283,7 @@ MxResult LegoOmni::Create(MxOmniCreateParam& p_param)
 	m_gameState->SetCurrentAct(LegoGameState::e_act1);
 
 	InitSdlEvents();
-
-	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
+	SetupSquirrelVM();
 
 	result = SUCCESS;
 

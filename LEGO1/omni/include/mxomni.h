@@ -107,6 +107,7 @@ public:
 	// SYNTHETIC: LEGO1 0x100aefd0
 	// MxOmni::`scalar deleting destructor'
 
+	void SetupSquirrelVM();
 	void ExecScriptFile(const char *p_path);
 
 protected:
