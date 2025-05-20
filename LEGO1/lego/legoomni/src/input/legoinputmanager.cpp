@@ -308,6 +308,7 @@ void LegoInputManager::ProcessEvents()
 MxBool LegoInputManager::ProcessOneEvent(LegoEventNotificationParam& p_param)
 {
 	MxBool processRoi;
+	LegoOmni::GetInstance()->SQCallback_ProcessOneEvent(p_param);
 
 	if (p_param.GetNotification() == c_notificationKeyPress) {
 		if (!Lego()->IsPaused() || p_param.GetKey() == SDLK_PAUSE) {

@@ -6,6 +6,7 @@
 #include "mxcriticalsection.h"
 #include "mxstl/stlcompat.h"
 #include "mxstring.h"
+#include "legoeventnotificationparam.h"
 
 #include <simplesquirrel/simplesquirrel.hpp>
 

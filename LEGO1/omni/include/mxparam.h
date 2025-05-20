@@ -1,16 +1,18 @@
 #ifndef MXPARAM_H
 #define MXPARAM_H
 
+#include <simplesquirrel/simplesquirrel.hpp>
+
 // VTABLE: ISLE 0x40f018
 // VTABLE: LEGO1 0x100d56e8
 // VTABLE: BETA10 0x101b86b4
 // SIZE 0x04
-class MxParam {
+class MxParam : public ssq::ExposableClass {
 public:
 	// FUNCTION: ISLE 0x401530
 	// FUNCTION: LEGO1 0x10010360
 	// FUNCTION: BETA10 0x10013540
-	virtual ~MxParam() {}
+	// virtual ~MxParam() {}
 };
 
 // SYNTHETIC: BETA10 0x10013710

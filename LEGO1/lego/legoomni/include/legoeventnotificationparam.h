@@ -31,14 +31,14 @@ public:
 
 	LegoEventNotificationParam() : MxNotificationParam(c_notificationType0, NULL) {}
 	LegoEventNotificationParam(
-		NotificationId p_type,
+		MxS32 p_type,
 		MxCore* p_sender,
 		MxU8 p_modifier,
 		MxS32 p_x,
 		MxS32 p_y,
 		SDL_Keycode p_key
 	)
-		: MxNotificationParam(p_type, p_sender), m_modifier(p_modifier), m_x(p_x), m_y(p_y), m_key(p_key), m_roi(NULL)
+		: MxNotificationParam((NotificationId)p_type, p_sender), m_modifier(p_modifier), m_x(p_x), m_y(p_y), m_key(p_key), m_roi(NULL)
 	{
 	}
 
@@ -67,6 +67,31 @@ public:
 
 	// FUNCTION: BETA10 0x1007d680
 	void SetY(MxS32 p_y) { m_y = p_y; }
+#ifdef LEGO1_DLL
+	static void expose(ssq::VM& vm) {
+		ssq::Class cls = vm.addClass("LegoEventNotificationParam", ssq::Class::Ctor<LegoEventNotificationParam(
+			MxS32 p_type,
+			MxCore* p_sender,
+			MxU8 p_modifier,
+			MxS32 p_x,
+			MxS32 p_y,
+			SDL_Keycode p_key
+		)>());
+
+		cls.addFunc("SetKey", &LegoEventNotificationParam::SetKey);
+		cls.addFunc("SetX", &LegoEventNotificationParam::SetX);
+		cls.addFunc("SetY", &LegoEventNotificationParam::SetY);
+		cls.addFunc("SetModifier", &LegoEventNotificationParam::SetModifier);
+
+		cls.addFunc("GetNotification", &LegoEventNotificationParam::GetNotification);
+		cls.addFunc("GetKey", &LegoEventNotificationParam::GetKey);
+		cls.addFunc("GetX", &LegoEventNotificationParam::GetX);
+		cls.addFunc("GetY", &LegoEventNotificationParam::GetY);
+		cls.addFunc("GetModifier", &LegoEventNotificationParam::GetModifier);
+	}
+#else
+	void expose(ssq::VM& vm);
+#endif
 
 protected:
 	MxU8 m_modifier;   // 0x0c

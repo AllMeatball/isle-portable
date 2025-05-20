@@ -6,6 +6,8 @@
 #include "legoutils.h"
 #include "mxdsaction.h"
 #include "mxomni.h"
+#include "mxtypes.h"
+#include "legoeventnotificationparam.h"
 
 #include <SDL3/SDL_events.h>
 
@@ -42,7 +44,7 @@ public:
 		c_clearScreen = 0x04
 	};
 
-	enum World {
+	enum World : MxS32 {
 		e_undefined = -1,
 		e_act1 = 0,
 		e_imain,
@@ -142,7 +144,7 @@ public:
 	MxResult RegisterWorlds();
 	const char* GetWorldName(LegoOmni::World p_id);
 	MxAtomId* GetWorldAtom(LegoOmni::World p_id);
-	World GetWorldId(const char* p_key);
+	MxS32 GetWorldId(const std::string p_key);
 	void DeleteAction();
 
 	static MxS32 GetCurrPathInfo(LegoPathBoundary**, MxS32&);
@@ -203,8 +205,9 @@ public:
 	// SYNTHETIC: LEGO1 0x10058b30
 	// LegoOmni::`scalar deleting destructor'
 
+	void SQCallback_ProcessOneEvent(LegoEventNotificationParam& p_param);
 	void SetupSquirrelVMCurrentClass() override;
-	void expose(ssq::VM& vm);
+	void expose(ssq::VM& vm) override;
 private:
 	WorldContainer* m_worlds;                    // 0x68
 	ViewLODListManager* m_viewLODListManager;    // 0x6c

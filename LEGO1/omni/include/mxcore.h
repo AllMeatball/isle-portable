@@ -43,6 +43,8 @@ public:
 	// SYNTHETIC: BETA10 0x1012c0d0
 	// MxCore::`scalar deleting destructor'
 
+	virtual void expose(ssq::VM& vm);
+
 private:
 	static MxU32 g_nextCoreId;
 

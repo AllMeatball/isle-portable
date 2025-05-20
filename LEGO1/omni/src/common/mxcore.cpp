@@ -27,3 +27,7 @@ MxLong MxCore::Notify(MxParam& p_param)
 	assert(0);
 	return 0;
 }
+
+void MxCore::expose(ssq::VM& vm)
+{
+}

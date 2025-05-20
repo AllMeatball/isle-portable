@@ -530,11 +530,11 @@ MxAtomId* LegoOmni::GetWorldAtom(LegoOmni::World p_worldId)
 }
 
 // FUNCTION: LEGO1 0x1005b490
-LegoOmni::World LegoOmni::GetWorldId(const char* p_key)
+MxS32 LegoOmni::GetWorldId(const std::string p_key)
 {
 	for (MxS32 i = 0; i < e_numWorlds; i++) {
 		// FIXME: this looks very fishy. Is this guarding against out-of-bounds access?
-		if ((MxS32*) &m_worlds[i] != (MxS32*) -4 && !SDL_strcasecmp(m_worlds[i].GetKey(), p_key)) {
+		if ((MxS32*) &m_worlds[i] != (MxS32*) -4 && !SDL_strcasecmp(m_worlds[i].GetKey(), p_key.c_str())) {
 			return m_worlds[i].GetId();
 		}
 	}
@@ -627,13 +627,43 @@ void LegoOmni::Resume()
 
 void LegoOmni::expose(ssq::VM& vm)
 {
-	ssq::Class cls = m_ssqVM.addClass("LegoOmni", ssq::Class::Ctor<LegoOmni()>());
+	ssq::Class cls = vm.addClass(LegoOmni::ClassName(), ssq::Class::Ctor<LegoOmni()>());
+
 	cls.addFunc("Pause", &LegoOmni::Pause);
 	cls.addFunc("Resume", &LegoOmni::Resume);
 	cls.addFunc("IsPaused", &LegoOmni::IsPaused);
+
+	cls.addFunc("GetWorldId", &LegoOmni::GetWorldId);
+
+	ssq::Enum enm = vm.addEnum("WorldId");
+	enm.addSlot("Undefined", (int)World::e_undefined);
+
+	enm.addSlot("Act1", (int)World::e_act1);
+	enm.addSlot("Act2", (int)World::e_act2);
+	enm.addSlot("Act3", (int)World::e_act3);
+
+	enm.addSlot("InfMain",      (int)World::e_imain);
+	enm.addSlot("InfScoreCube", (int)World::e_icube);
+	enm.addSlot("InfRegBook",   (int)World::e_ireg);
+
+	enm.addSlot("InfElevator",  (int)World::e_ielev);
+	enm.addSlot("Test",         (int)World::e_test);
+
+	enm.addSlot("Hospital", (int)World::e_hosp);
+	enm.addSlot("Police", (int)World::e_police);
 }
 
 void LegoOmni::SetupSquirrelVMCurrentClass() {
 	LegoOmni::expose(m_ssqVM);
+	LegoEventNotificationParam::expose(m_ssqVM);
 	m_ssqVM.set("LEGO1", this);
+}
+
+void LegoOmni::SQCallback_ProcessOneEvent(LegoEventNotificationParam& p_param) {
+	try {
+		ssq::Function callback_func = m_ssqVM.findFunc("CALLBACK_ProcessOneEvent");
+		m_ssqVM.callFunc(callback_func, m_ssqVM, p_param);
+	} catch (ssq::NotFoundException& e) {
+
+	}
 }
