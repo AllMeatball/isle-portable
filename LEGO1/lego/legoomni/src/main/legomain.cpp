@@ -30,6 +30,7 @@
 #include "mxtransitionmanager.h"
 #include "mxvariabletable.h"
 #include "scripts.h"
+#include "simplesquirrel/vm.hpp"
 #include "viewmanager/viewmanager.h"
 
 #include <SDL3/SDL_log.h>
@@ -282,6 +283,8 @@ MxResult LegoOmni::Create(MxOmniCreateParam& p_param)
 	m_gameState->SetCurrentAct(LegoGameState::e_act1);
 
 	InitSdlEvents();
+
+	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
 
 	result = SUCCESS;
 

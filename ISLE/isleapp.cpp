@@ -753,6 +753,9 @@ inline bool IsleApp::Tick()
 	LegoOmni::GetInstance()->CreateBackgroundAudio();
 	BackgroundAudioManager()->Enable(m_useMusic);
 
+
+	LegoOmni::GetInstance()->ExecScriptFile("init.nut");
+
 	MxStreamController* stream = Streamer()->Open("\\lego\\scripts\\isle\\isle", MxStreamer::e_diskStream);
 	MxDSAction ds;
 

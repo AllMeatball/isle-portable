@@ -161,6 +161,7 @@ MxResult MxOmni::Create(MxOmniCreateParam& p_param)
 			}
 		}
 	}
+	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
 
 	result = SUCCESS;
 
@@ -422,6 +423,20 @@ void MxOmni::Resume()
 		m_soundManager->Resume();
 		m_paused = FALSE;
 	}
+}
+
+void MxOmni::ExecScriptFile(const char *p_path)
+{
+	MxString real_path(g_hdPath.GetData());
+	real_path += "\\squirrel\\";
+	real_path += p_path;
+	real_path.MapPathToFilesystem();
+
+	const char *script_path = real_path.GetData();
+	SDL_Log("Executing script '%s'", script_path);
+
+	ssq::Script script = m_ssqVM.compileFile(script_path);
+	m_ssqVM.run(script);
 }
 
 vector<MxString> MxOmni::GlobIsleFiles(const MxString& p_path)

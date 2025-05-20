@@ -7,6 +7,8 @@
 #include "mxstl/stlcompat.h"
 #include "mxstring.h"
 
+#include <simplesquirrel/simplesquirrel.hpp>
+
 #include <SDL3/SDL_video.h>
 #ifdef MINIWIN
 #include "miniwin.h"
@@ -105,12 +107,15 @@ public:
 	// SYNTHETIC: LEGO1 0x100aefd0
 	// MxOmni::`scalar deleting destructor'
 
+	void ExecScriptFile(const char *p_path);
+
 protected:
 	static MxOmni* g_instance;
 	static vector<MxString> g_hdFiles;
 	static vector<MxString> g_cdFiles;
 
 	static vector<MxString> GlobIsleFiles(const MxString& p_path);
+	ssq::VM m_ssqVM;
 
 	MxString m_mediaPath;                         // 0x08
 	HWND m_windowHandle;                          // 0x18
