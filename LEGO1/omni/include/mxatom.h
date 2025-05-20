@@ -5,6 +5,8 @@
 #include "mxstl/stlcompat.h"
 #include "mxstring.h"
 #include "mxtypes.h"
+#include "simplesquirrel/vm.hpp"
+#include <simplesquirrel/simplesquirrel.hpp>
 
 // Counts the number of existing MxAtomId objects based
 // on the matching char* string. A <map> seems fit for purpose here:
@@ -59,10 +61,10 @@ enum LookupMode {
 };
 
 // SIZE 0x04
-class MxAtomId {
+class MxAtomId : public ssq::ExposableClass {
 public:
 	MxAtomId(const char*, LookupMode);
-	LEGO1_EXPORT ~MxAtomId();
+	LEGO1_EXPORT ~MxAtomId() override;
 
 	LEGO1_EXPORT MxAtomId& operator=(const MxAtomId& p_atomId);
 
@@ -89,6 +91,14 @@ public:
 
 	// FUNCTION: BETA10 0x100735e0
 	const char* GetInternal() const { return m_internal; }
+
+#ifdef LEGO1_DLL
+	static void expose(ssq::VM &vm) {
+		ssq::Class cls = vm.addClass("MxAtomId", ssq::Class::Ctor<MxAtomId()>());
+	}
+#else
+	void expose(ssq::VM &vm);
+#endif
 
 private:
 	// FUNCTION: BETA10 0x101236f0

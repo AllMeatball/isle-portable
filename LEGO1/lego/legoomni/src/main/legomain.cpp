@@ -661,6 +661,8 @@ void LegoOmni::expose(ssq::VM& vm)
 
 void LegoOmni::SetupSquirrelVMCurrentClass() {
 	LegoOmni::expose(m_ssqVM);
+	MxAtomId::expose(m_ssqVM);
+
 	LegoGameState::expose(m_ssqVM);
 	LegoEventNotificationParam::expose(m_ssqVM);
 	m_ssqVM.set("LEGO", this);
