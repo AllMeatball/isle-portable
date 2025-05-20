@@ -30,7 +30,6 @@
 #include "mxtransitionmanager.h"
 #include "mxvariabletable.h"
 #include "scripts.h"
-#include "simplesquirrel/vm.hpp"
 #include "viewmanager/viewmanager.h"
 
 #include <SDL3/SDL_log.h>
@@ -662,7 +661,7 @@ void LegoOmni::expose(ssq::VM& vm)
 void LegoOmni::SetupSquirrelVMCurrentClass() {
 	LegoOmni::expose(m_ssqVM);
 	LegoEventNotificationParam::expose(m_ssqVM);
-	m_ssqVM.set("LEGO1", this);
+	m_ssqVM.set("LEGO", this);
 }
 
 void LegoOmni::SQCallback_ProcessOneEvent(LegoEventNotificationParam& p_param) {
