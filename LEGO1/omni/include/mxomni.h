@@ -108,6 +108,8 @@ public:
 	// MxOmni::`scalar deleting destructor'
 
 	void SetupSquirrelVM();
+	virtual void SetupSquirrelVMCurrentClass();
+
 	void ExecScriptFile(const char *p_path);
 
 protected:

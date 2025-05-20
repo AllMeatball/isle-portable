@@ -624,3 +624,16 @@ void LegoOmni::Resume()
 	MxOmni::Resume();
 	SetAppCursor(e_cursorArrow);
 }
+
+void LegoOmni::expose(ssq::VM& vm)
+{
+	ssq::Class cls = m_ssqVM.addClass("LegoOmni", ssq::Class::Ctor<LegoOmni()>());
+	cls.addFunc("Pause", &LegoOmni::Pause);
+	cls.addFunc("Resume", &LegoOmni::Resume);
+	cls.addFunc("IsPaused", &LegoOmni::IsPaused);
+}
+
+void LegoOmni::SetupSquirrelVMCurrentClass() {
+	LegoOmni::expose(m_ssqVM);
+	m_ssqVM.set("LEGO1", this);
+}

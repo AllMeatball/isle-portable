@@ -203,6 +203,8 @@ public:
 	// SYNTHETIC: LEGO1 0x10058b30
 	// LegoOmni::`scalar deleting destructor'
 
+	void SetupSquirrelVMCurrentClass() override;
+	void expose(ssq::VM& vm);
 private:
 	WorldContainer* m_worlds;                    // 0x68
 	ViewLODListManager* m_viewLODListManager;    // 0x6c

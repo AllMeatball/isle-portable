@@ -436,7 +436,12 @@ void SQWrap_ShowMessageBox(unsigned int flags, std::string message)
 void MxOmni::SetupSquirrelVM()
 {
 	m_ssqVM = ssq::VM(1024, ssq::Libs::ALL);
-    m_ssqVM.addFunc("ShowMessageBox", SQWrap_ShowMessageBox);
+	m_ssqVM.addFunc("ShowMessageBox", SQWrap_ShowMessageBox);
+	SetupSquirrelVMCurrentClass();
+}
+
+void MxOmni::SetupSquirrelVMCurrentClass()
+{
 }
 
 void MxOmni::ExecScriptFile(const char *p_path)
