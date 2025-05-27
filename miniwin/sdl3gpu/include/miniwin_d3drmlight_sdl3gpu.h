@@ -5,8 +5,10 @@
 #include "miniwin_p.h"
 
 struct Direct3DRMLight_SDL3GPUImpl : public Direct3DRMObjectBase_SDL3GPUImpl<IDirect3DRMLight> {
-	Direct3DRMLight_SDL3GPUImpl(float r, float g, float b);
+	Direct3DRMLight_SDL3GPUImpl(D3DRMLIGHTTYPE type, float r, float g, float b);
 	HRESULT SetColorRGB(float r, float g, float b) override;
+
+	D3DRMLIGHTTYPE m_type;
 
 private:
 	D3DCOLOR m_color = 0xFFFFFFFF;

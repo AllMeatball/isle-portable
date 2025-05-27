@@ -253,7 +253,7 @@ HRESULT Direct3DRM_SDL3GPUImpl::CreateLightRGB(
 	IDirect3DRMLight** outLight
 )
 {
-	*outLight = static_cast<IDirect3DRMLight*>(new Direct3DRMLight_SDL3GPUImpl(r, g, b));
+	*outLight = static_cast<IDirect3DRMLight*>(new Direct3DRMLight_SDL3GPUImpl(type, r, g, b));
 	return DD_OK;
 }
 

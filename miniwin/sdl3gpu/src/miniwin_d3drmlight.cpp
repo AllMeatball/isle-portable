@@ -1,8 +1,9 @@
 #include "miniwin_d3drmlight_sdl3gpu.h"
 #include "miniwin_p.h"
 
-Direct3DRMLight_SDL3GPUImpl::Direct3DRMLight_SDL3GPUImpl(float r, float g, float b)
+Direct3DRMLight_SDL3GPUImpl::Direct3DRMLight_SDL3GPUImpl(D3DRMLIGHTTYPE type, float r, float g, float b)
 {
+	m_type = type;
 	SetColorRGB(r, g, b);
 }
 
