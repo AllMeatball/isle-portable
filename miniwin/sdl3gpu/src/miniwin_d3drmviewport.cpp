@@ -156,28 +156,29 @@ static void MixLights(IDirect3DRMFrame* frame, IDirect3DRMLightArray* lightArray
 		float diffuse;
 
 		float norm[3] = {0.f, 0.f, 0.f};
-		if (lightImpl->m_type == D3DRMLIGHTTYPE::POINT) {
-			D3DVECTOR cameraPosD3DVec;
-			float vertexPos[3] = {vtx->x, vtx->y, vtx->z};
+		if (lightImpl->m_type != D3DRMLIGHTTYPE::POINT)
+			continue;
 
-			frame->GetPosition(NULL, &cameraPosD3DVec);
-			float cameraPos[3] = {cameraPosD3DVec.x, cameraPosD3DVec.y, cameraPosD3DVec.z};
+		D3DVECTOR cameraPosD3DVec;
+		float vertexPos[3] = {vtx->x, vtx->y, vtx->z};
 
-			VMV3(distVec, cameraPos, vertexPos);
+		frame->GetPosition(NULL, &cameraPosD3DVec);
+		float cameraPos[3] = {cameraPosD3DVec.x, cameraPosD3DVec.y, cameraPosD3DVec.z};
 
-			float lightDirMangitude = NORMSQRD3(distVec);
-			lightDir[0] = distVec[0] / lightDirMangitude;
-			lightDir[1] = distVec[1] / lightDirMangitude;
-			lightDir[2] = distVec[2] / lightDirMangitude;
+		VMV3(distVec, cameraPos, vertexPos);
 
-			// diffuse = SDL_max(DOT3(norm, lightDir), 0.f);
-			diffuse = 0.5f;
-			vtx->r *= diffuse;
-			vtx->g *= diffuse;
-			vtx->b *= diffuse;
+		float lightDirMangitude = NORMSQRD3(distVec);
+		lightDir[0] = distVec[0] / lightDirMangitude;
+		lightDir[1] = distVec[1] / lightDirMangitude;
+		lightDir[2] = distVec[2] / lightDirMangitude;
 
-			SDL_Log("Point light rendered");
-		}
+		// diffuse = SDL_max(DOT3(norm, lightDir), 0.f);
+		diffuse = 0.5f;
+		vtx->r *= diffuse;
+		vtx->g *= diffuse;
+		vtx->b *= diffuse;
+
+		SDL_Log("Point light rendered");
 	}
 }
 
