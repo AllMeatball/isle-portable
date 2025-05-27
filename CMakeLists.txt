@@ -110,6 +110,7 @@ add_library(miniwin STATIC EXCLUDE_FROM_ALL
   miniwin/common/src/miniwin.cpp
   ${miniwin_sdl3gpu_sources}
 )
+
 # Force reported render mods from MiniWin
 target_compile_definitions(miniwin PRIVATE MINIWIN_PIXELFORMAT=SDL_PIXELFORMAT_RGB565)
 target_include_directories(miniwin PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/miniwin/include>")
@@ -117,6 +118,7 @@ target_include_directories(miniwin PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/miniwin/
 target_include_directories(miniwin PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/miniwin/sdl3gpu/include")
 target_compile_definitions(miniwin PUBLIC "MINIWIN")
 target_link_libraries(miniwin PRIVATE SDL3::SDL3)
+target_link_libraries(miniwin PRIVATE Vec::Vec)
 
 set(shader_src_dir "${CMAKE_CURRENT_SOURCE_DIR}/miniwin/sdl3gpu/shaders/src")
 set(shader_gen_dir "${CMAKE_CURRENT_SOURCE_DIR}/miniwin/sdl3gpu/shaders/generated")
