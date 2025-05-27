@@ -141,6 +141,8 @@ static void MixLights(IDirect3DRMFrame* frame, IDirect3DRMLightArray* lightArray
 	}
 
 	DWORD numLights = lightArray->GetSize();
+
+	SDL_Log("# Lights %d", numLights);
 	IDirect3DRMLight *light = NULL;
 	for (DWORD i = 0; i < numLights; i++) {
 		Direct3DRMLight_SDL3GPUImpl* lightImpl;
@@ -173,7 +175,7 @@ static void MixLights(IDirect3DRMFrame* frame, IDirect3DRMLightArray* lightArray
 		lightDir[2] = distVec[2] / lightDirMangitude;
 
 		// diffuse = SDL_max(DOT3(norm, lightDir), 0.f);
-		diffuse = 0.5f;
+		diffuse = 0.0f;
 		vtx->r *= diffuse;
 		vtx->g *= diffuse;
 		vtx->b *= diffuse;
