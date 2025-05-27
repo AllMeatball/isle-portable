@@ -1,13 +1,19 @@
 #include "SDL3/SDL_stdinc.h"
+#include "miniwin.h"
+#include "miniwin_d3d.h"
+#include "miniwin_d3drm.h"
 #include "miniwin_d3drm_sdl3gpu.h"
+#include "miniwin_d3drmlight_sdl3gpu.h"
 #include "miniwin_d3drmframe_sdl3gpu.h"
 #include "miniwin_d3drmviewport_sdl3gpu.h"
 #include "miniwin_p.h"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_log.h>
 #include <float.h>
 #include <functional>
 #include <math.h>
+#include <vec.h>
 
 Direct3DRMViewport_SDL3GPUImpl::Direct3DRMViewport_SDL3GPUImpl(
 	DWORD width,
@@ -100,6 +106,53 @@ static void ComputeFrameWorldMatrix(IDirect3DRMFrame* frame, D3DRMMATRIX4D out)
 	memcpy(out, acc, sizeof(acc));
 }
 
+static void MixLights(IDirect3DRMFrame* frame, IDirect3DRMLightArray* lightArray, PositionColorVertex* vtx) {
+	if (!frame) {
+		SDL_LogError(SDL_LOG_CATEGORY_RENDER, "NULL IDirect3DRMLightArray (MixLights)");
+		return;
+	}
+
+	DWORD numLights = lightArray->GetSize();
+	IDirect3DRMLight *light = NULL;
+	for (DWORD i = 0; i < numLights; i++) {
+		Direct3DRMLight_SDL3GPUImpl* lightImpl;
+		if (lightArray->GetElement(i, &light) != D3DRM_OK) {
+			SDL_Log("Failed to get light index %d", i);
+			continue;
+		}
+
+		lightImpl = static_cast<Direct3DRMLight_SDL3GPUImpl*>(light);
+
+		float distVec[3];
+		float lightDir[3];
+		float diffuse;
+
+		float norm[3] = {0.f, 0.f, 0.f};
+		if (lightImpl->m_type == D3DRMLIGHTTYPE::POINT) {
+			D3DVECTOR cameraPosD3DVec;
+			float vertexPos[3] = {vtx->x, vtx->y, vtx->z};
+
+			frame->GetPosition(NULL, &cameraPosD3DVec);
+			float cameraPos[3] = {cameraPosD3DVec.x, cameraPosD3DVec.y, cameraPosD3DVec.z};
+
+			VMV3(distVec, cameraPos, vertexPos);
+
+			float lightDirMangitude = NORMSQRD3(distVec);
+			lightDir[0] = distVec[0] / lightDirMangitude;
+			lightDir[1] = distVec[1] / lightDirMangitude;
+			lightDir[2] = distVec[2] / lightDirMangitude;
+
+			// diffuse = SDL_max(DOT3(norm, lightDir), 0.f);
+			diffuse = 0.5f;
+			vtx->r *= diffuse;
+			vtx->g *= diffuse;
+			vtx->b *= diffuse;
+
+			SDL_Log("Point light rendered");
+		}
+	}
+}
+
 HRESULT Direct3DRMViewport_SDL3GPUImpl::CollectSceneData()
 {
 	MINIWIN_NOT_IMPLEMENTED(); // Lights, camera, textures, materials
@@ -110,6 +163,10 @@ HRESULT Direct3DRMViewport_SDL3GPUImpl::CollectSceneData()
 	D3DRMMATRIX4D cameraWorld, viewMatrix;
 	ComputeFrameWorldMatrix(m_camera, cameraWorld);
 	D3DRMMatrixInvertOrthogonal(viewMatrix, cameraWorld);
+
+	// Lighting
+	IDirect3DRMFrame* lightFrame = NULL;
+	IDirect3DRMLightArray* lightArray = NULL;
 
 	std::function<void(IDirect3DRMFrame*, D3DRMMATRIX4D)> recurseFrame;
 
@@ -122,6 +179,13 @@ HRESULT Direct3DRMViewport_SDL3GPUImpl::CollectSceneData()
 		// Compute combined world matrix: world = parent * local
 		D3DRMMATRIX4D worldMatrix;
 		D3DRMMatrixMultiply(worldMatrix, parentMatrix, localMatrix);
+
+		// Load in light array and frame
+		IDirect3DRMLightArray* lightArrayTemp = NULL;
+		if (SUCCEEDED(frame->GetLights(&lightArrayTemp)) && lightArrayTemp) {
+			lightFrame = frame;
+			lightArray = lightArrayTemp;
+		}
 
 		IDirect3DRMVisualArray* va = nullptr;
 		if (SUCCEEDED(frame->GetVisuals(&va)) && va) {
@@ -179,6 +243,7 @@ HRESULT Direct3DRMViewport_SDL3GPUImpl::CollectSceneData()
 								vtx.r = (color >> 16) & 0xFF;
 								vtx.g = (color >> 8) & 0xFF;
 								vtx.b = (color >> 0) & 0xFF;
+								MixLights(lightFrame, lightArray, &vtx);
 								verts.push_back(vtx);
 							}
 						}
