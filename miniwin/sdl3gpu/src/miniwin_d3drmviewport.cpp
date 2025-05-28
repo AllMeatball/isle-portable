@@ -12,6 +12,8 @@
 #include <SDL3/SDL_log.h>
 
 #include <cassert>
+#include <SDL3/SDL_log.h>
+
 #include <float.h>
 #include <functional>
 #include <math.h>
