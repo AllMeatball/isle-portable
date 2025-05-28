@@ -53,6 +53,11 @@ typedef struct PositionColorVertex {
 	Uint8 r, g, b, a;
 } PositionColorVertex;
 
+typedef struct PointLight {
+	float x, y, z;
+	float r, g, b;
+} PointLight;
+
 template <typename InterfaceType, typename ActualType, typename ArrayInterface>
 class Direct3DRMArrayBase_SDL3GPUImpl : public ArrayInterface {
 public:
