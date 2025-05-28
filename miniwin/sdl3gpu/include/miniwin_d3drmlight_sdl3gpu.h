@@ -9,8 +9,6 @@ struct Direct3DRMLight_SDL3GPUImpl : public Direct3DRMObjectBase_SDL3GPUImpl<IDi
 	HRESULT SetColorRGB(float r, float g, float b) override;
 
 	D3DRMLIGHTTYPE m_type;
-
-private:
 	D3DCOLOR m_color = 0xFFFFFFFF;
 };
 
